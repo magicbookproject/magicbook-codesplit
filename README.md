@@ -2,7 +2,13 @@
 
 This is a plugin that allows you to write example code in `.js` files, and include them in your book. It will parse your JavaScript files into sections with code and comments, so you can lay out your example in a nice, intuitive way.
 
-## Using codesplit
+## Using the plugin
+
+First install the NPM package, either in your `package.json` file in your book repo, or by running the following.
+
+```
+npm i magicbook-codesplit
+```
 
 Simply add this to your config file/
 
@@ -27,7 +33,7 @@ Then in your content, use the `codesplit` tag.
 ```md
 Now I want to show you an example.
 
-{% codesplit example.js $}
+{% codesplit example.js %}
 ```
 
 When building the book, codesplit will output the following basic structure for you.
