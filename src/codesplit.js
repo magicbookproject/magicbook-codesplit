@@ -96,13 +96,13 @@ Plugin.prototype = {
   // ---------------------------------------------
 
   parseLiquid: function(config, extras, callback) {
-
-    if(!_.get(config, 'codesplit.includes')) {
-      return console.log('WARNING: No codesplit include folder set')
-    }
-
     var that = this;
     _.set(config, 'liquid.customTags.codesplit', function(context, tag, example) {
+
+      if(!_.get(config, 'codesplit.includes')) {
+        return console.log('WARNING: No codesplit include folder set')
+      }
+      
       var examplePath = path.join(config.codesplit.includes, example);
       var ast = tinyliquid.parse(that.getExample(examplePath))
       context.astStack.push(ast);
