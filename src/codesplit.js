@@ -17,6 +17,7 @@ Plugin.prototype = {
 
     var opt = {} // no op for now
     var div = cheerio.load('<div class="codesplit"><div class="codesplit-content"></div></div>');
+    var box = div('.codesplit-content');
 
     // If we want to display just a part of this example,
     // let's look for the start and finish lines and use
@@ -45,45 +46,85 @@ Plugin.prototype = {
       });
     }
 
-    // Parse every line and create individual code and comment objects in
-    // the containers array.
-    var containers = [];
+    // Loop through every line and create pair objects with
+    // .code and .comment arrays holding the lines.
+    var pairs = [];
+    var lastType;
     for(var i = 0; i < split.length; i++) {
+
+      // what type of line is this?
       var type = split[i].match(/^\s*\/\//) ? "comment" : "code";
-      if(containers.length == 0 || containers[containers.length-1].type !== type) {
-        containers.push({ type: type, lines: [] })
+
+      // should we create a new pair?
+      // TODO: Add new pair when l=NUM is up!
+      if(pairs.length == 0 || (lastType == "code" && type == "comment")) {
+        pairs.push({ code:[], comment:[], klass:[] })
       }
-      containers[containers.length-1].lines.push(split[i]);
+
+      var pair = pairs[pairs.length-1];
+
+      // Parse attributes if comment
+      if(type == "comment") {
+        var regex = /\{(.+)\}/;
+        var match = regex.exec(split[i]);
+        if(match) {
+          var vals = match[1].trim().split(' ');
+          _.each(vals, function(val) {
+
+            // if id
+            if(val.charAt(0) === '#') {
+              pair.id = val.substring(1);
+            }
+
+            // if class
+            if(val.charAt(0) === '.') {
+              pair.klass.push(val.substring(1));
+            }
+
+            // if lines
+
+            // if attribute
+
+          });
+          split[i] = split[i].replace(regex, '');
+        }
+      }
+
+      lastType = type;
+
+      pair[type].push(split[i]);
     }
 
-    // Create new elements from the containers array.
-    for(var i = 0; i < containers.length; i++) {
+    // Loop through every pair
+    for(var i = 0; i < pairs.length; i++) {
 
-      // if this is the first item and it's code, or it's
-      // any comment, create a new pair div.
-      if((i == 0 && containers[i].type == "code") || containers[i].type == "comment") {
-        div('.codesplit-content').append('<div class="codesplit-pair"></div>');
-      }
+      var pair = pairs[i];
 
-      // If this is a comment
-      if(containers[i].type == "comment") {
+      // Create a new pair element
+      box.append('<div class="codesplit-pair"></div>');
+      var jpair = box.find('.codesplit-pair');
 
-        var para = _.map(containers[i].lines, function(line) {
+      // Add attributes from object
+      if(pair.id)               jpair.attr('id', pair.id)
+      if(pair.klass.length > 0) jpair.addClass(pair.klass.join(' '))
+
+      // Create comments
+      if(pairs[i].comment.length > 0) {
+        var para = _.map(pairs[i].comment, function(line) {
           return line.replace('//', '').trim();
         }).join(' ');
-        div('.codesplit-pair').last().append('<div class="codesplit-comment"><p>' + para + '</p></div>');
+        jpair.append('<div class="codesplit-comment"><p>'+para+'</p></div>');
       }
-      // If this is a comment
-      else if(containers[i].type == "code") {
 
-        var lines = containers[i].lines.join('\n');
-        // if this is going to be shows as one big field
-        // let's preserve the exact spacing.
-        if(opt.keepLastLinebreak) {
-          lines += '\n';
-        }
-        div('.codesplit-pair').last().append('<div class="codesplit-code"><pre><code>' + lines + '</code></pre></div>');
+      // Create code
+      var codes = pairs[i].code.join('\n');
+      // if this is going to be shows as one big field
+      // let's preserve the exact spacing.
+      if(opt.keepLastLinebreak) {
+        codes += '\n';
       }
+      jpair.append('<div class="codesplit-code"><pre><code>' + codes + '</code></pre></div>');
+
     }
 
     return div.html();

@@ -23,6 +23,29 @@ beforeAll(function(done) {
   });
 });
 
+function expectCode($) {
+
+  // we have four code-pair elements
+  //expect($.children('.codesplit-pair').length).toBe(4);
+
+  // The first should have the code and the comment
+  var first = $.find('.codesplit-pair').first();
+  expect(first.find('.codesplit-comment').html().trim()).toEqual('<p>First we need to set up the variables to be used throughout the sketch.</p>');
+  expect(first.find('.codesplit-code').html().trim()).toEqual('<pre><code>var x = 100;\nvar y = 100;\n</code></pre>');
+
+  // the second should have a class and an ID
+  var second = $.find('.codesplit-pair').eq(1);
+  expect(second.attr('class')).toEqual('codesplit-pair myClass myOtherClass');
+  expect(second.attr('id')).toEqual('myId');
+
+  // the third should have just one line of code
+
+  // The last should have just the final code
+  // var last = $.find('.codesplit-pair').last();
+  // expect(last.find('.codesplit-comment').length).toBe(0)
+  // expect(last.find('.codesplit-code pre code').html()).toEqual('background(255);\n}')
+}
+
 describe("Codesplit plugin", function() {
 
   it("should split code and comments", function(done) {
@@ -36,21 +59,10 @@ describe("Codesplit plugin", function() {
       },
       finish: function() {
         var content = fs.readFileSync(path.join('tmp', uid, 'build1/codesplit.html')).toString();
-
         var $ = cheerio.load(content);
         expect($('.codesplit').length).toBe(2);
-
-        // liquid tag
-        var one = $('.codesplit-content').eq(0);
-        expect(one.children('.codesplit-pair').length).toBe(2); // This will if we add end instruction
-        expect(one.find('.codesplit-pair .codesplit-comment').first().html().trim()).toEqual('<p>First we need to set up the variables to be used throughout the sketch.</p>');
-        expect(one.find('.codesplit-pair .codesplit-code').first().html().trim()).toEqual('<pre><code>var x = 100;\nvar y = 100;\n</code></pre>');
-
-        // inline tag
-        var two = $('.codesplit-content').eq(1);
-        expect(two.children('.codesplit-pair').length).toBe(2); // This will if we add end instruction
-        expect(two.find('.codesplit-pair .codesplit-comment').first().html().trim()).toEqual('<p>First we need to set up the variables to be used throughout the sketch.</p>');
-        expect(two.find('.codesplit-pair .codesplit-code').first().html().trim()).toEqual('<pre><code>var x = 100;\nvar y = 100;\n</code></pre>');
+        expectCode($('.codesplit-content').eq(0));
+        expectCode($('.codesplit-content').eq(1));
         done();
       }
     });
