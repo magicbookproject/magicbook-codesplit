@@ -36,6 +36,8 @@ Now I want to show you an example.
 {% codesplit example.js %}
 ```
 
+You can also add the class `.codesplit` to any pre tag, and automatically split the code without using the liquid tag.
+
 When building the book, codesplit will output the following basic structure for you.
 
 ```html
