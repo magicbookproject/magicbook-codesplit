@@ -28,6 +28,9 @@ describe("Codesplit plugin", function() {
   it("should split code and comments", function(done) {
     var uid = triggerBuild({
       builds: [{ format: "html" }],
+      liquid : {
+        includes: "book/examples"
+      },
       codesplit: {
         includes: "book/examples"
       },
