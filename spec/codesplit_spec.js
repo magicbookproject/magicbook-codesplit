@@ -39,15 +39,15 @@ describe("Codesplit plugin", function() {
 
         // liquid tag
         var one = $('.codesplit-content').eq(0);
-        expect(one.children().length).toBe(8); // This will if we add end instruction
-        expect(one.find('.codesplit-comment').first().html().trim()).toEqual('<p>First we need to set up the variables to be used throughout the sketch.</p>');
-        expect(one.find('.codesplit-code').first().html().trim()).toEqual('<pre><code>var x = 100;\nvar y = 100;\nvar xspeed = 1;\nvar yspeed = 3.3;\nvar myName = &quot;Rune Madsen&quot;;\n</code></pre>');
+        expect(one.children('.codesplit-pair').length).toBe(2); // This will if we add end instruction
+        expect(one.find('.codesplit-pair .codesplit-comment').first().html().trim()).toEqual('<p>First we need to set up the variables to be used throughout the sketch.</p>');
+        expect(one.find('.codesplit-pair .codesplit-code').first().html().trim()).toEqual('<pre><code>var x = 100;\nvar y = 100;\n</code></pre>');
 
         // inline tag
         var two = $('.codesplit-content').eq(1);
-        expect(two.children().length).toBe(8); // This will if we add end instruction
-        expect(two.find('.codesplit-comment').first().html().trim()).toEqual('<p>First we need to set up the variables to be used throughout the sketch.</p>');
-        expect(two.find('.codesplit-code').first().html().trim()).toEqual('<pre><code>var x = 100;\nvar y = 100;\nvar xspeed = 1;\nvar yspeed = 3.3;\nvar myName = &quot;Rune Madsen&quot;;\n</code></pre>');
+        expect(two.children('.codesplit-pair').length).toBe(2); // This will if we add end instruction
+        expect(two.find('.codesplit-pair .codesplit-comment').first().html().trim()).toEqual('<p>First we need to set up the variables to be used throughout the sketch.</p>');
+        expect(two.find('.codesplit-pair .codesplit-code').first().html().trim()).toEqual('<pre><code>var x = 100;\nvar y = 100;\n</code></pre>');
         done();
       }
     });

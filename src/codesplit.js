@@ -59,22 +59,30 @@ Plugin.prototype = {
     // Create new elements from the containers array.
     for(var i = 0; i < containers.length; i++) {
 
+      // if this is the first item and it's code, or it's
+      // any comment, create a new pair div.
+      if((i == 0 && containers[i].type == "code") || containers[i].type == "comment") {
+        div('.codesplit-content').append('<div class="codesplit-pair"></div>');
+      }
+
       // If this is a comment
       if(containers[i].type == "comment") {
+
         var para = _.map(containers[i].lines, function(line) {
           return line.replace('//', '').trim();
         }).join(' ');
-        div('.codesplit-content').append('<div class="codesplit-comment"><p>' + para + '</p></div>');
+        div('.codesplit-pair').last().append('<div class="codesplit-comment"><p>' + para + '</p></div>');
       }
       // If this is a comment
       else if(containers[i].type == "code") {
+
         var lines = containers[i].lines.join('\n');
         // if this is going to be shows as one big field
         // let's preserve the exact spacing.
         if(opt.keepLastLinebreak) {
           lines += '\n';
         }
-        div('.codesplit-content').append('<div class="codesplit-code"><pre><code>' + lines + '</code></pre></div>');
+        div('.codesplit-pair').last().append('<div class="codesplit-code"><pre><code>' + lines + '</code></pre></div>');
       }
     }
 
@@ -102,7 +110,7 @@ Plugin.prototype = {
       if(!_.get(config, 'codesplit.includes')) {
         return console.log('WARNING: No codesplit include folder set')
       }
-      
+
       var examplePath = path.join(config.codesplit.includes, example);
       var ast = tinyliquid.parse(that.getExample(examplePath))
       context.astStack.push(ast);
