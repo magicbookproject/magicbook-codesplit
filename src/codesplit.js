@@ -3,10 +3,12 @@ var path = require('path');
 var fs = require('fs');
 var cheerio = require('cheerio');
 var tinyliquid = require('tinyliquid');
+var through = require('through2');
 
 var Plugin = function(registry) {
   this.cache = {};
-  registry.before('load', 'codesplit:tag', _.bind(this.liquidTag, this));
+  registry.before('load', 'codesplit:liquid', _.bind(this.parseLiquid, this));
+  registry.after('markdown:convert', 'codesplit:inline', _.bind(this.parseInline, this));
 };
 
 Plugin.prototype = {
@@ -90,7 +92,10 @@ Plugin.prototype = {
     return this.parseExample(this.cache[examplePath]);
   },
 
-  liquidTag: function(config, extras, callback) {
+  // Plugin functions
+  // ---------------------------------------------
+
+  parseLiquid: function(config, extras, callback) {
 
     if(!_.get(config, 'codesplit.includes')) {
       return console.log('WARNING: No codesplit include folder set')
@@ -103,6 +108,33 @@ Plugin.prototype = {
       context.astStack.push(ast);
     });
     callback(null, config, extras);
+  },
+
+  parseInline: function(config, stream, extras, callback) {
+
+    var that = this;
+
+    // loop through all files and find codesplit classes
+    // that haven't yet been parsed.
+    stream = stream.pipe(through.obj(function(file, enc, cb) {
+
+      var changed = false;
+      file.$el = file.$el || cheerio.load(file.contents.toString());
+
+      file.$el('.codesplit').each(function() {
+        var jel = file.$el(this);
+        if(jel.find('.codesplit-content').length == 0) {
+          changed = true;
+          jel.replaceWith(that.parseExample(jel.html()));
+        }
+      });
+
+      if(changed) file.contents = new Buffer(file.$el.html());
+
+      cb(null, file);
+    }));
+
+    callback(null, config, stream, extras);
   }
 
 }
