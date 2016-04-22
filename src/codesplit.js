@@ -55,13 +55,13 @@ Plugin.prototype = {
       // what type of line is this?
       var type = split[i].match(/^\s*\/\//) ? "comment" : "code";
 
-      // should we create a new pair?
-      // TODO: Add new pair when l=NUM is up!
-      if(pairs.length == 0 || (lastType == "code" && type == "comment")) {
-        pairs.push({ code:[], comment:[], klass:[] })
-      }
-
       var pair = pairs[pairs.length-1];
+
+      // should we create a new pair?
+      if(!pair || (lastType == "code" && type == "comment") || (pair.maxLines && pair.code.length >= pair.maxLines)) {
+        pair = { code:[], comment:[], klass:[] };
+        pairs.push(pair);
+      }
 
       // Parse attributes if comment
       if(type == "comment") {
@@ -70,21 +70,9 @@ Plugin.prototype = {
         if(match) {
           var vals = match[1].trim().split(' ');
           _.each(vals, function(val) {
-
-            // if id
-            if(val.charAt(0) === '#') {
-              pair.id = val.substring(1);
-            }
-
-            // if class
-            if(val.charAt(0) === '.') {
-              pair.klass.push(val.substring(1));
-            }
-
-            // if lines
-
-            // if attribute
-
+            if(val.charAt(0) === '#') pair.id = val.substring(1);
+            if(val.charAt(0) === '.') pair.klass.push(val.substring(1));
+            if(val.charAt(0) === '!') pair.maxLines = parseInt(val.substring(1));
           });
           split[i] = split[i].replace(regex, '');
         }

@@ -30,8 +30,8 @@ function expectCode($) {
 
   // The first should have the code and the comment
   var first = $.find('.codesplit-pair').first();
-  expect(first.find('.codesplit-comment').html().trim()).toEqual('<p>First we need to set up the variables to be used throughout the sketch.</p>');
-  expect(first.find('.codesplit-code').html().trim()).toEqual('<pre><code>var x = 100;\nvar y = 100;\n</code></pre>');
+  expect(first.find('.codesplit-comment p').html()).toEqual('First we need to set up the variables to be used throughout the sketch.');
+  expect(first.find('.codesplit-code pre code').html()).toEqual('var x = 100;\nvar y = 100;\n');
 
   // the second should have a class and an ID
   var second = $.find('.codesplit-pair').eq(1);
@@ -39,11 +39,14 @@ function expectCode($) {
   expect(second.attr('id')).toEqual('myId');
 
   // the third should have just one line of code
+  var third = $.find('.codesplit-pair').eq(2);
+  expect(third.find('.codesplit-comment p').html()).toEqual('This is a createCanvas function');
+  expect(third.find('.codesplit-code pre code').html().trim()).toEqual('createCanvas(640, 360);');
 
   // The last should have just the final code
-  // var last = $.find('.codesplit-pair').last();
-  // expect(last.find('.codesplit-comment').length).toBe(0)
-  // expect(last.find('.codesplit-code pre code').html()).toEqual('background(255);\n}')
+  var last = $.find('.codesplit-pair').last();
+  expect(last.find('.codesplit-comment').length).toBe(0)
+  expect(last.find('.codesplit-code pre code').html().trim()).toEqual('background(255);\n}')
 }
 
 describe("Codesplit plugin", function() {
