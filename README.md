@@ -130,6 +130,6 @@ Using a `!` followed by a number simply allows you to specify how many lines of 
 
 You can of course mix all these attributes in a single comment.
 
-```html
+```js
 // This is my comment {!2 .myClass #myId .myOtherClass}
 ```
