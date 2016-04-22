@@ -10,22 +10,41 @@ First install the NPM package, either in your `package.json` file in your book r
 npm i magicbook-codesplit
 ```
 
-Simply add this to your config file/
+Then add the plugin to your config file.
 
 ```json
 {
-  "addPlugins" : ["magicbook-codesplit"],
-  "codesplit" : {
-    "includes" : "examples"
-  }
+  "addPlugins" : ["magicbook-codesplit"]
 }
 ```
 
-Then create this file in `examples/example.js`.
+### Splitting inline
+
+Simply add the `.codesplit` class to any `<pre>` tag with code you want to split.
+
+```html
+<pre class="codesplit">// This is an example
+var myName = "Rune Madsen";
+</pre>
+```
+
+### Splitting includes
+
+Codesplit can load a file (like a liquid include) and split it. First create this file in `examples/example.js`.
 
 ```js
 // This is an example
 var myName = "Rune Madsen";
+```
+
+Then add the following to your config file.
+
+```json
+{
+  "codesplit" : {
+    "includes" : "examples"
+  }
+}
 ```
 
 Then in your content, use the `codesplit` tag.
@@ -36,9 +55,7 @@ Now I want to show you an example.
 {% codesplit example.js %}
 ```
 
-You can also add the class `.codesplit` to any pre tag, and automatically split the code without using the liquid tag.
-
-When building the book, codesplit will output the following basic structure for you.
+For both of those examples, codesplit will output the following structure for you.
 
 ```html
 <p>Now I want to show you an example</p>
