@@ -127,3 +127,9 @@ var notMyName = "James Brown"
 ```
 
 Using a `!` followed by a number simply allows you to specify how many lines of code should be grouped in the code pair.
+
+You can of course mix all these attributes in a single comment.
+
+```html
+// This is my comment {!2 .myClass #myId .myOtherClass}
+```
