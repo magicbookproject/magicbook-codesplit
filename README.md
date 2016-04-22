@@ -18,7 +18,7 @@ Then add the plugin to your config file.
 }
 ```
 
-### Splitting inline
+### Inline
 
 Simply add the `.codesplit` class to any `<pre>` tag with code you want to split.
 
@@ -28,7 +28,7 @@ var myName = "Rune Madsen";
 </pre>
 ```
 
-### Splitting includes
+### Files
 
 Codesplit can load a file (like a liquid include) and split it. First create this file in `examples/example.js`.
 
@@ -62,14 +62,68 @@ For both of those examples, codesplit will output the following structure for yo
 
 <div class="codesplit">
   <div class="codesplit-content">
-    <div class="codesplit-comment">
-      <p>This is an example</p>
-    </div>
-    <div class="codesplit-code">
-      <pre><code>var myName = "Rune Madsen";</code></pre>
+    <div class="codesplit-pair">
+      <div class="codesplit-comment">
+        <p>This is an example</p>
+      </div>
+      <div class="codesplit-code">
+        <pre><code>var myName = "Rune Madsen";</code></pre>
+      </div>
     </div>
   </div>
 </div>
 ```
 
 You have to write your own CSS to style these DIV's. The markup allows you to show the layout in a horizontal and vertical way.
+
+## Attributes
+
+Inspired by Markdown Extra, you can use a special syntax to apply classes and other instructions to a code pair.
+
+### Classes
+
+To add a class to a codepair, use the following syntax.
+
+```js
+// This is my comment {.myClass}
+var myName = "Rune Madsen"
+```
+
+This will add the `.myClass` class to the `.code-pair` output:
+
+```html
+<div class="codesplit-pair myClass">
+  ...
+</div>
+```
+
+This is helpful if you want to highlight a specific piece of code, etc.
+
+### Ids
+
+To add an id to a codepair, use the following syntax.
+
+```js
+// This is my comment {#myId}
+var myName = "Rune Madsen"
+```
+
+This will add the `#MyId` id to the `.code-pair` output:
+
+```html
+<div class="codesplit-pair" id="myId">
+  ...
+</div>
+```
+
+### Max lines
+
+By default, a new code pair will be created when the parser encounters a comment. However, you can control this grouping. Here's an example that makes one code pair holding the comment and the first line of code. The second line of code will be in a code pair by itself.
+
+```js
+// This is my name {!1}
+var myName = "Rune Madsen"
+var notMyName = "James Brown"
+```
+
+Using a `!` followed by a number simply allows you to specify how many lines of code should be grouped in the code pair.
