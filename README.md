@@ -133,3 +133,38 @@ You can of course mix all these attributes in a single comment.
 ```js
 // This is my comment {!2 .myClass #myId .myOtherClass}
 ```
+
+We found that we were using this attribute a lot to not include blank lines between pairs. So if the codesplitter encounters to pairs that both have comments, and the first ends with a blank line, it will automatically put that empty line in a pair by itself.
+
+So this example...
+
+```js
+// This is my name
+var myName = "Rune Madsen"
+
+// This is not my name
+var notMyName = "James Brown"
+```
+
+Will have this output automatically...
+
+```html
+<div class="codesplit">
+  <div class="pairs">
+    <div class="pair">
+      <div class="comment"><p>This is my name</p></div>
+      <div class="code"><pre><code>var myName = "Rune Madsen"
+</code></pre></div>
+    </div>
+    <div class="pair no-comment">
+      <div class="code"><pre><code>
+</code></pre></div>
+    </div>
+    <div class="pair">
+      <div class="comment"><p>This is not my name</p></div>
+      <div class="code"><pre><code>var notMyName = "James Brown"
+</code></pre></div>
+    </div>
+  </div>
+</div>
+```
