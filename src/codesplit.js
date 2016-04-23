@@ -16,8 +16,8 @@ Plugin.prototype = {
   parseExample: function(code) {
 
     var opt = {} // no op for now
-    var div = cheerio.load('<div class="codesplit"><div class="codesplit-content"></div></div>');
-    var box = div('.codesplit-content');
+    var div = cheerio.load('<div class="codesplit"><div class="pairs"></div></div>');
+    var box = div('.pairs');
 
     // If we want to display just a part of this example,
     // let's look for the start and finish lines and use
@@ -92,20 +92,20 @@ Plugin.prototype = {
       var pair = pairs[i];
 
       // Create a new pair element
-      box.append('<div class="codesplit-pair"></div>');
-      var jpair = box.find('.codesplit-pair').last();
+      box.append('<div class="pair"></div>');
+      var jpair = box.find('.pair').last();
 
       // Add attributes from object
       if(pair.id)                  jpair.attr('id', pair.id);
       if(pair.klass.length > 0)    jpair.addClass(pair.klass.join(' '));
-      if(pair.comment.length == 0) jpair.addClass('codesplit-nocomment');
+      if(pair.comment.length == 0) jpair.addClass('no-comment');
 
       // Create comments
       if(pair.comment.length > 0) {
         var para = _.map(pair.comment, function(line) {
           return line.replace('//', '').trim();
         }).join(' ');
-        jpair.append('<div class="codesplit-comment"><p>'+para+'</p></div>');
+        jpair.append('<div class="comment"><p>'+para+'</p></div>');
       }
 
       // Create code
@@ -115,7 +115,7 @@ Plugin.prototype = {
       if(opt.keepLastLinebreak) {
         codes += '\n';
       }
-      jpair.append('<div class="codesplit-code"><pre><code>' + codes + '</code></pre></div>');
+      jpair.append('<div class="code"><pre><code>' + codes + '</code></pre></div>');
 
     }
 
@@ -164,7 +164,7 @@ Plugin.prototype = {
 
       file.$el('.codesplit').each(function() {
         var jel = file.$el(this);
-        if(jel.find('.codesplit-content').length == 0) {
+        if(jel.find('.pairs').length == 0) {
           changed = true;
           jel.replaceWith(that.parseExample(jel.html()));
         }

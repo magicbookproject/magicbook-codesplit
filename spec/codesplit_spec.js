@@ -25,47 +25,47 @@ beforeAll(function(done) {
 function expectCode($) {
 
   // The first should have the code and the comment
-  var first = $.find('.codesplit-pair').first();
-  expect(first.find('.codesplit-comment p').html()).toEqual('First we need to set up the variables to be used throughout the sketch.');
-  expect(first.find('.codesplit-code pre code').html()).toEqual('var x = 100;\nvar y = 100;\n');
+  var first = $.find('.pair').first();
+  expect(first.find('.comment p').html()).toEqual('First we need to set up the variables to be used throughout the sketch.');
+  expect(first.find('.code pre code').html()).toEqual('var x = 100;\nvar y = 100;\n');
 
   // the second should have a class and an ID
-  var second = $.find('.codesplit-pair').eq(1);
-  expect(second.attr('class')).toEqual('codesplit-pair myClass myOtherClass');
+  var second = $.find('.pair').eq(1);
+  expect(second.attr('class')).toEqual('pair myClass myOtherClass');
   expect(second.attr('id')).toEqual('myId');
 
   // the third should have just one line of code
-  var third = $.find('.codesplit-pair').eq(2);
-  expect(third.find('.codesplit-comment p').html()).toEqual('This is a createCanvas function');
-  expect(third.find('.codesplit-code pre code').html().trim()).toEqual('createCanvas(640, 360);');
+  var third = $.find('.pair').eq(2);
+  expect(third.find('.comment p').html()).toEqual('This is a createCanvas function');
+  expect(third.find('.code pre code').html().trim()).toEqual('createCanvas(640, 360);');
 
   // The last should have just the final code
-  var last = $.find('.codesplit-pair').last();
-  expect(last.find('.codesplit-comment').length).toBe(0)
-  expect(last.find('.codesplit-code pre code').html().trim()).toEqual('background(255);\n}')
+  var last = $.find('.pair').last();
+  expect(last.find('.comment').length).toBe(0)
+  expect(last.find('.code pre code').html().trim()).toEqual('background(255);\n}')
 }
 
 describe("Codesplit plugin", function() {
 
-  // it("should split code and comments", function(done) {
-  //   var uid = triggerBuild({
-  //     builds: [{ format: "html" }],
-  //     files: ["book/content/codesplit.md"],
-  //     liquid : {
-  //       includes: "book/examples"
-  //     },
-  //     codesplit: {
-  //       includes: "book/examples"
-  //     },
-  //     finish: function() {
-  //       var content = fs.readFileSync(path.join('tmp', uid, 'build1/codesplit.html')).toString();
-  //       var $ = cheerio.load(content);
-  //       expectCode($('.codesplit-content').eq(0));
-  //       expectCode($('.codesplit-content').eq(1));
-  //       done();
-  //     }
-  //   });
-  // });
+  it("should split code and comments", function(done) {
+    var uid = triggerBuild({
+      builds: [{ format: "html" }],
+      files: ["book/content/codesplit.md"],
+      liquid : {
+        includes: "book/examples"
+      },
+      codesplit: {
+        includes: "book/examples"
+      },
+      finish: function() {
+        var content = fs.readFileSync(path.join('tmp', uid, 'build1/codesplit.html')).toString();
+        var $ = cheerio.load(content);
+        expectCode($('.codesplit').eq(0));
+        expectCode($('.codesplit').eq(1));
+        done();
+      }
+    });
+  });
 
   it("should work on more advanced example", function(done) {
     var uid = triggerBuild({
@@ -80,23 +80,23 @@ describe("Codesplit plugin", function() {
       finish: function() {
         var content = fs.readFileSync(path.join('tmp', uid, 'build1/advanced.html')).toString();
         var $ = cheerio.load(content);
-        expect($('.codesplit-pair').eq(0).find('.codesplit-comment p').text()).toEqual('Variables for location and speed of ball.');
-        expect($('.codesplit-pair').eq(0).find('.codesplit-code pre code').html()).toEqual('float x = 100;\nfloat y = 100;\nfloat xspeed = 1;\nfloat yspeed = 3.3;\n');
-        expect($('.codesplit-pair').eq(1).find('.codesplit-comment p').text()).toEqual('Remember how Processing works?  setup() is executed once when the sketch starts and draw() loops forever and ever (until you quit).');
-        expect($('.codesplit-pair').eq(1).find('.codesplit-code pre code').html()).toEqual('void setup() {\n  size(640,360);\n  background(255);\n}');
-        expect($('.codesplit-pair').eq(2).find('.codesplit-comment').length).toBe(0);
-        expect($('.codesplit-pair').eq(2).hasClass('codesplit-nocomment')).toBe(true);
-        expect($('.codesplit-pair').eq(2).find('.codesplit-code pre code').html()).toEqual('\nvoid draw() {\n  background(255);\n');
-        expect($('.codesplit-pair').eq(3).find('.codesplit-comment p').text()).toEqual('Move the ball according to its speed.');
-        expect($('.codesplit-pair').eq(3).find('.codesplit-code pre code').html()).toEqual('  x = x + xspeed;\n  y = y + yspeed;');
-        expect($('.codesplit-pair').eq(4).find('.codesplit-comment').length).toBe(0);
-        expect($('.codesplit-pair').eq(4).find('.codesplit-code pre code').html()).toEqual('');
-        expect($('.codesplit-pair').eq(5).find('.codesplit-comment p').text()).toEqual('Check for bouncing.');
-        expect($('.codesplit-pair').eq(5).find('.codesplit-code pre code').html()).toEqual('  if ((x &gt; width) || (x &lt; 0)) {\n    xspeed = xspeed * -1;\n  }\n  if ((y &gt; height) || (y &lt; 0)) {\n    yspeed = yspeed * -1;\n  }');
-        expect($('.codesplit-pair').eq(6).find('.codesplit-comment').length).toBe(0);
-        expect($('.codesplit-pair').eq(6).find('.codesplit-code pre code').html()).toEqual('\n  stroke(0);\n  fill(175);');
-        expect($('.codesplit-pair').eq(7).find('.codesplit-comment p').text()).toEqual('Display the ball at the location (x,y).');
-        expect($('.codesplit-pair').eq(7).find('.codesplit-code pre code').html()).toEqual('  ellipse(x,y,16,16);\n}\n');
+        expect($('.pair').eq(0).find('.comment p').text()).toEqual('Variables for location and speed of ball.');
+        expect($('.pair').eq(0).find('.code pre code').html()).toEqual('float x = 100;\nfloat y = 100;\nfloat xspeed = 1;\nfloat yspeed = 3.3;\n');
+        expect($('.pair').eq(1).find('.comment p').text()).toEqual('Remember how Processing works?  setup() is executed once when the sketch starts and draw() loops forever and ever (until you quit).');
+        expect($('.pair').eq(1).find('.code pre code').html()).toEqual('void setup() {\n  size(640,360);\n  background(255);\n}');
+        expect($('.pair').eq(2).find('.comment').length).toBe(0);
+        expect($('.pair').eq(2).hasClass('no-comment')).toBe(true);
+        expect($('.pair').eq(2).find('.code pre code').html()).toEqual('\nvoid draw() {\n  background(255);\n');
+        expect($('.pair').eq(3).find('.comment p').text()).toEqual('Move the ball according to its speed.');
+        expect($('.pair').eq(3).find('.code pre code').html()).toEqual('  x = x + xspeed;\n  y = y + yspeed;');
+        expect($('.pair').eq(4).find('.comment').length).toBe(0);
+        expect($('.pair').eq(4).find('.code pre code').html()).toEqual('');
+        expect($('.pair').eq(5).find('.comment p').text()).toEqual('Check for bouncing.');
+        expect($('.pair').eq(5).find('.code pre code').html()).toEqual('  if ((x &gt; width) || (x &lt; 0)) {\n    xspeed = xspeed * -1;\n  }\n  if ((y &gt; height) || (y &lt; 0)) {\n    yspeed = yspeed * -1;\n  }');
+        expect($('.pair').eq(6).find('.comment').length).toBe(0);
+        expect($('.pair').eq(6).find('.code pre code').html()).toEqual('\n  stroke(0);\n  fill(175);');
+        expect($('.pair').eq(7).find('.comment p').text()).toEqual('Display the ball at the location (x,y).');
+        expect($('.pair').eq(7).find('.code pre code').html()).toEqual('  ellipse(x,y,16,16);\n}\n');
         done();
       }
     });

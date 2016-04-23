@@ -61,7 +61,7 @@ For both of those examples, codesplit will output the following structure for yo
 <p>Now I want to show you an example</p>
 
 <div class="codesplit">
-  <div class="codesplit-content">
+  <div class="pairs">
     <div class="codesplit-pair">
       <div class="codesplit-comment">
         <p>This is an example</p>
