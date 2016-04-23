@@ -83,9 +83,10 @@ describe("Codesplit plugin", function() {
         expect($('.codesplit-pair').eq(0).find('.codesplit-comment p').text()).toEqual('Variables for location and speed of ball.');
         expect($('.codesplit-pair').eq(0).find('.codesplit-code pre code').html()).toEqual('float x = 100;\nfloat y = 100;\nfloat xspeed = 1;\nfloat yspeed = 3.3;\n');
         expect($('.codesplit-pair').eq(1).find('.codesplit-comment p').text()).toEqual('Remember how Processing works?  setup() is executed once when the sketch starts and draw() loops forever and ever (until you quit).');
-        expect($('.codesplit-pair').eq(1).find('.codesplit-code pre code').html()).toEqual('void setup() {\n  size(640,360);\n  background(255);}\n');
-
-
+        expect($('.codesplit-pair').eq(1).find('.codesplit-code pre code').html()).toEqual('void setup() {\n  size(640,360);\n  background(255);\n}');
+        expect($('.codesplit-pair').eq(2).find('.codesplit-comment').length).toBe(0);
+        expect($('.codesplit-pair').eq(2).hasClass('codesplit-nocomment')).toBe(true);
+        expect($('.codesplit-pair').eq(2).find('.codesplit-code pre code').html()).toEqual('\nvoid draw() {\n  background(255);\n');
         done();
       }
     });

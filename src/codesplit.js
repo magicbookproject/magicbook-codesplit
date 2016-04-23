@@ -99,19 +99,20 @@ Plugin.prototype = {
       var jpair = box.find('.codesplit-pair').last();
 
       // Add attributes from object
-      if(pair.id)               jpair.attr('id', pair.id)
-      if(pair.klass.length > 0) jpair.addClass(pair.klass.join(' '))
+      if(pair.id)                  jpair.attr('id', pair.id);
+      if(pair.klass.length > 0)    jpair.addClass(pair.klass.join(' '));
+      if(pair.comment.length == 0) jpair.addClass('codesplit-nocomment');
 
       // Create comments
-      if(pairs[i].comment.length > 0) {
-        var para = _.map(pairs[i].comment, function(line) {
+      if(pair.comment.length > 0) {
+        var para = _.map(pair.comment, function(line) {
           return line.replace('//', '').trim();
         }).join(' ');
         jpair.append('<div class="codesplit-comment"><p>'+para+'</p></div>');
       }
 
       // Create code
-      var codes = pairs[i].code.join('\n');
+      var codes = pair.code.join('\n');
       // if this is going to be shows as one big field
       // let's preserve the exact spacing.
       if(opt.keepLastLinebreak) {
