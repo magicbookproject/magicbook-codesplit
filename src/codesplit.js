@@ -62,12 +62,9 @@ Plugin.prototype = {
 
       // should we create a new pair?
       if(!pair || (lastType == "code" && type == "comment") || (pair.maxLines && pair.code.length >= pair.maxLines)) {
-        // console.log('NEEEEW', !pair, (lastType == "code" && type == "comment"), (pair && pair.maxLines && pair.code.length >= pair.maxLines))
         pair = { code:[], comment:[], klass:[] };
         pairs.push(pair);
       }
-
-      // console.log(split[i])
 
       // Parse attributes if comment
       if(type == "comment") {

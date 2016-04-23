@@ -4,7 +4,8 @@ float y = 100;
 float xspeed = 1;
 float yspeed = 3.3;
 
-// {!4} Remember how Processing works?  setup() is executed once when the sketch starts and draw() loops forever and ever (until you quit).
+// {!4} Remember how Processing works?  setup() is executed once
+// when the sketch starts and draw() loops forever and ever (until you quit).
 void setup() {
   size(640,360);
   background(255);

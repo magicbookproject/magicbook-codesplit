@@ -87,6 +87,16 @@ describe("Codesplit plugin", function() {
         expect($('.codesplit-pair').eq(2).find('.codesplit-comment').length).toBe(0);
         expect($('.codesplit-pair').eq(2).hasClass('codesplit-nocomment')).toBe(true);
         expect($('.codesplit-pair').eq(2).find('.codesplit-code pre code').html()).toEqual('\nvoid draw() {\n  background(255);\n');
+        expect($('.codesplit-pair').eq(3).find('.codesplit-comment p').text()).toEqual('Move the ball according to its speed.');
+        expect($('.codesplit-pair').eq(3).find('.codesplit-code pre code').html()).toEqual('  x = x + xspeed;\n  y = y + yspeed;');
+        expect($('.codesplit-pair').eq(4).find('.codesplit-comment').length).toBe(0);
+        expect($('.codesplit-pair').eq(4).find('.codesplit-code pre code').html()).toEqual('');
+        expect($('.codesplit-pair').eq(5).find('.codesplit-comment p').text()).toEqual('Check for bouncing.');
+        expect($('.codesplit-pair').eq(5).find('.codesplit-code pre code').html()).toEqual('  if ((x &gt; width) || (x &lt; 0)) {\n    xspeed = xspeed * -1;\n  }\n  if ((y &gt; height) || (y &lt; 0)) {\n    yspeed = yspeed * -1;\n  }');
+        expect($('.codesplit-pair').eq(6).find('.codesplit-comment').length).toBe(0);
+        expect($('.codesplit-pair').eq(6).find('.codesplit-code pre code').html()).toEqual('\n  stroke(0);\n  fill(175);');
+        expect($('.codesplit-pair').eq(7).find('.codesplit-comment p').text()).toEqual('Display the ball at the location (x,y).');
+        expect($('.codesplit-pair').eq(7).find('.codesplit-code pre code').html()).toEqual('  ellipse(x,y,16,16);\n}\n');
         done();
       }
     });
