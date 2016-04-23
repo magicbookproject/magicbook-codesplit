@@ -10,7 +10,6 @@ function triggerBuild(config) {
   var uid = uuid.v4().replace('-', "").substring(0, 10);
   _.defaults(config, {
     addPlugins: ["./src/codesplit"],
-    files: ["book/content/codesplit.md"],
     destination: "tmp/"+uid+"/:build"
   });
   build(config);
@@ -24,9 +23,6 @@ beforeAll(function(done) {
 });
 
 function expectCode($) {
-
-  // we have four code-pair elements
-  //expect($.children('.codesplit-pair').length).toBe(4);
 
   // The first should have the code and the comment
   var first = $.find('.codesplit-pair').first();
@@ -51,9 +47,30 @@ function expectCode($) {
 
 describe("Codesplit plugin", function() {
 
-  it("should split code and comments", function(done) {
+  // it("should split code and comments", function(done) {
+  //   var uid = triggerBuild({
+  //     builds: [{ format: "html" }],
+  //     files: ["book/content/codesplit.md"],
+  //     liquid : {
+  //       includes: "book/examples"
+  //     },
+  //     codesplit: {
+  //       includes: "book/examples"
+  //     },
+  //     finish: function() {
+  //       var content = fs.readFileSync(path.join('tmp', uid, 'build1/codesplit.html')).toString();
+  //       var $ = cheerio.load(content);
+  //       expectCode($('.codesplit-content').eq(0));
+  //       expectCode($('.codesplit-content').eq(1));
+  //       done();
+  //     }
+  //   });
+  // });
+
+  it("should work on more advanced example", function(done) {
     var uid = triggerBuild({
       builds: [{ format: "html" }],
+      files: ["book/content/advanced.md"],
       liquid : {
         includes: "book/examples"
       },
@@ -61,11 +78,13 @@ describe("Codesplit plugin", function() {
         includes: "book/examples"
       },
       finish: function() {
-        var content = fs.readFileSync(path.join('tmp', uid, 'build1/codesplit.html')).toString();
+        var content = fs.readFileSync(path.join('tmp', uid, 'build1/advanced.html')).toString();
         var $ = cheerio.load(content);
-        expect($('.codesplit').length).toBe(2);
-        expectCode($('.codesplit-content').eq(0));
-        expectCode($('.codesplit-content').eq(1));
+        // console.log($('.codesplit-pair').eq(0).html())
+        expect($('.codesplit-pair').eq(0).find('.codesplit-comment p').text()).toEqual('Variables for location and speed of ball.');
+        expect($('.codesplit-pair').eq(0).find('.codesplit-code pre code').html()).toEqual('float x = 100;\nfloat y = 100;\nfloat xspeed = 1;\nfloat yspeed = 3.3;\n');
+
+
         done();
       }
     });

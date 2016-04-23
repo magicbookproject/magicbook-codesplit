@@ -46,6 +46,10 @@ Plugin.prototype = {
       });
     }
 
+    // if the first line was a linebreak, let's get rid of it.
+    // allows people to not have <pre> and code on same line.
+    if(split[0] == '') split.shift();
+
     // Loop through every line and create pair objects with
     // .code and .comment arrays holding the lines.
     var pairs = [];
@@ -54,14 +58,16 @@ Plugin.prototype = {
 
       // what type of line is this?
       var type = split[i].match(/^\s*\/\//) ? "comment" : "code";
-
       var pair = pairs[pairs.length-1];
 
       // should we create a new pair?
       if(!pair || (lastType == "code" && type == "comment") || (pair.maxLines && pair.code.length >= pair.maxLines)) {
+        // console.log('NEEEEW', !pair, (lastType == "code" && type == "comment"), (pair && pair.maxLines && pair.code.length >= pair.maxLines))
         pair = { code:[], comment:[], klass:[] };
         pairs.push(pair);
       }
+
+      // console.log(split[i])
 
       // Parse attributes if comment
       if(type == "comment") {
@@ -90,7 +96,7 @@ Plugin.prototype = {
 
       // Create a new pair element
       box.append('<div class="codesplit-pair"></div>');
-      var jpair = box.find('.codesplit-pair');
+      var jpair = box.find('.codesplit-pair').last();
 
       // Add attributes from object
       if(pair.id)               jpair.attr('id', pair.id)
