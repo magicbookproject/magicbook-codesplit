@@ -80,9 +80,10 @@ describe("Codesplit plugin", function() {
       finish: function() {
         var content = fs.readFileSync(path.join('tmp', uid, 'build1/advanced.html')).toString();
         var $ = cheerio.load(content);
-        // console.log($('.codesplit-pair').eq(0).html())
         expect($('.codesplit-pair').eq(0).find('.codesplit-comment p').text()).toEqual('Variables for location and speed of ball.');
         expect($('.codesplit-pair').eq(0).find('.codesplit-code pre code').html()).toEqual('float x = 100;\nfloat y = 100;\nfloat xspeed = 1;\nfloat yspeed = 3.3;\n');
+        expect($('.codesplit-pair').eq(1).find('.codesplit-comment p').text()).toEqual('Remember how Processing works?  setup() is executed once when the sketch starts and draw() loops forever and ever (until you quit).');
+        expect($('.codesplit-pair').eq(1).find('.codesplit-code pre code').html()).toEqual('void setup() {\n  size(640,360);\n  background(255);}\n');
 
 
         done();
