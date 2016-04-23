@@ -7,7 +7,7 @@ var y = 100;
 // is executed once when the sketch starts.
 // {.myClass .myOtherClass #myId}
 function setup() {
-  // This is a createCanvas function {!1}
+  // {!1} This is a createCanvas function
   createCanvas(640, 360);
   background(255);
 }

@@ -86,6 +86,18 @@ Plugin.prototype = {
       pair[type].push(split[i]);
     }
 
+    // Find pairs where code has an empty line. If that pair has a comment
+    // and the next pair has a comment, make that line a separate pair,
+    // so we get a nice spacing.
+    for(var i = pairs.length-2; i >= 0; i--) {
+      var cur = pairs[i];
+      var nex = pairs[i+1];
+      if(cur.comment.length > 0 && nex.comment.length > 0 && cur.code[cur.code.length-1] == '') {
+        cur.code.pop();
+        pairs.splice(i+1, 0, { code:[''], comment:[], klass:[] })
+      }
+    }
+
     // Loop through every pair
     for(var i = 0; i < pairs.length; i++) {
 
@@ -109,16 +121,12 @@ Plugin.prototype = {
       }
 
       // Create code
-      var codes = pair.code.join('\n');
-      // if this is going to be shows as one big field
-      // let's preserve the exact spacing.
-      if(opt.keepLastLinebreak) {
-        codes += '\n';
-      }
-      jpair.append('<div class="code"><pre><code>' + codes + '</code></pre></div>');
+      var codes = pair.code.join('\n') + '\n';
+      // It's important that pre starts on new line, as the markdown spec treats it
+      // differently.
+      jpair.append('<div class="code">\n\n<pre><code>' + codes + '</code></pre></div>');
 
     }
-
     return div.html();
   },
 

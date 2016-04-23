@@ -14,7 +14,7 @@ void setup() {
 void draw() {
   background(255);
 
-  // {!2} Move the ball according to its speed.
+  // Move the ball according to its speed.
   x = x + xspeed;
   y = y + yspeed;
 
