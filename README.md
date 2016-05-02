@@ -168,3 +168,17 @@ Will have this output automatically...
   </div>
 </div>
 ```
+
+## Pick specific line from example
+
+Sometimes you want to have a full example to e.g. run in the browser, but just show a few lines of code from the example. You can use the `lines` setting for this. This example shows only line 2,3,6,7,8 from the `example.js` file.
+
+<pre class="codesplit" data-lines="2,3,6-8">
+...
+</pre>
+
+You can use the same setting in the liquid tag.
+
+```html
+{% codesplit example.js lines="2,3,6-8" %}
+```
