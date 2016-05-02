@@ -1,3 +1,3 @@
 # Lines heading
 
-{% codesplit example.js lines="3,4,7,8,9" %}
+{% codesplit example.js lines="3,4,7-9" %}

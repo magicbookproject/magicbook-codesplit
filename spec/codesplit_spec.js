@@ -101,7 +101,7 @@ describe("Codesplit plugin", function() {
 
   describe("lines", function() {
 
-    it('should pick specific lines', function(done) {
+    it('should pick specific lines both as single numbers and as ranges', function(done) {
       var uid = triggerBuild({
         builds: [{ format: "html" }],
         files: ["book/content/lines.md"],
@@ -118,14 +118,6 @@ describe("Codesplit plugin", function() {
       });
     })
 
-    // it('should pick a range of lines', function(done) {
-    //
-    // });
-    //
-    // it('should pick both specific and range', function(done) {
-    //
-    // });
-    //
     // it('should work on data-lines attribute', function(done) {
     //
     // });

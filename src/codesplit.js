@@ -27,19 +27,22 @@ Plugin.prototype = {
       var newSplit = [];
 
       // convert the numbers into single numbers or array of ranges
-      var nums = _.map(attrs.lines.split(','), function(num) {
+      var nums = _.each(attrs.lines.split(','), function(num) {
         num = num.trim();
-        if(num.match(/\-/)) return _.map(num.split('-'), function(n) { return parseInt(n) });
-        else return parseInt(num);
-      });
 
-      // find those lines
-      _.each(nums, function(num) {
-
-        if(_.isNumber(num)) {
-          newSplit.push(split[num-1]);
+        // if is range
+        if(num.match(/\-/)) {
+          var range = num.split('-');
+          var start = parseInt(range[0]);
+          var stop = parseInt(range[1]);
+          for(var i = start-1; i < stop; i++) {
+            newSplit.push(split[i]);
+          }
         }
-
+        // if number
+        else {
+          newSplit.push(split[parseInt(num)-1]);
+        }
       });
 
       split = newSplit;
