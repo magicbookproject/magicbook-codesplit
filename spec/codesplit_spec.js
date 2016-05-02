@@ -101,26 +101,39 @@ describe("Codesplit plugin", function() {
 
   describe("lines", function() {
 
-    it('should pick specific lines both as single numbers and as ranges', function(done) {
+    function expectLines(el) {
+      expect(el.find('.pair').length).toEqual(2);
+      expect(el.find('.pair').eq(0).hasClass('no-comment')).toBeTruthy();
+      expect(el.find('.pair').eq(0).find('.code pre code').html()).toEqual('var x = 100;\nvar y = 100;\n');
+      expect(el.find('.pair').eq(1).find('.comment p').text()).toEqual('is executed once when the sketch starts. ');
+      expect(el.find('.pair').eq(1).find('.code pre code').html()).toEqual('function setup() {\n');
+    }
+
+    it('should work on liquid tag', function(done) {
       var uid = triggerBuild({
         builds: [{ format: "html" }],
         files: ["book/content/lines.md"],
         finish: function() {
           var content = fs.readFileSync(path.join('tmp', uid, 'build1/lines.html')).toString();
           var $ = cheerio.load(content);
-          expect($('.pair').length).toEqual(2);
-          expect($('.pair').eq(0).hasClass('no-comment')).toBeTruthy();
-          expect($('.pair').eq(0).find('.code pre code').html()).toEqual('var x = 100;\nvar y = 100;\n');
-          expect($('.pair').eq(1).find('.comment p').text()).toEqual('is executed once when the sketch starts. ');
-          expect($('.pair').eq(1).find('.code pre code').html()).toEqual('function setup() {\n');
+          expectLines($('.pairs').eq(0));
           done();
         }
       });
     })
 
-    // it('should work on data-lines attribute', function(done) {
-    //
-    // });
+    it('should work as data-lines attribute', function(done) {
+      var uid = triggerBuild({
+        builds: [{ format: "html" }],
+        files: ["book/content/lines.md"],
+        finish: function() {
+          var content = fs.readFileSync(path.join('tmp', uid, 'build1/lines.html')).toString();
+          var $ = cheerio.load(content);
+          expectLines($('.pairs').eq(1));
+          done();
+        }
+      });
+    });
 
   });
 

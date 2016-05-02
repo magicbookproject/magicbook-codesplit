@@ -196,7 +196,12 @@ Plugin.prototype = {
         var jel = file.$el(this);
         if(jel.find('.pairs').length == 0) {
           changed = true;
-          jel.replaceWith(that.parseExample(jel.html()));
+          var attrs = {};
+          var lines = jel.attr('data-lines');
+          if(lines) {
+            attrs.lines = lines;
+          }
+          jel.replaceWith(that.parseExample(jel.html(), attrs));
         }
       });
 
