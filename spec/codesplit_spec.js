@@ -10,7 +10,13 @@ function triggerBuild(config) {
   var uid = uuid.v4().replace('-', "").substring(0, 10);
   _.defaults(config, {
     addPlugins: ["./src/codesplit"],
-    destination: "tmp/"+uid+"/:build"
+    destination: "tmp/"+uid+"/:build",
+    liquid : {
+      includes: "book/examples"
+    },
+    codesplit: {
+      includes: "book/examples"
+    }
   });
   build(config);
   return uid;
@@ -48,16 +54,10 @@ function expectCode($) {
 
 describe("Codesplit plugin", function() {
 
-  it("should split code and comments", function(done) {
+  /*it("should split code and comments", function(done) {
     var uid = triggerBuild({
       builds: [{ format: "html" }],
       files: ["book/content/codesplit.md"],
-      liquid : {
-        includes: "book/examples"
-      },
-      codesplit: {
-        includes: "book/examples"
-      },
       finish: function() {
         var content = fs.readFileSync(path.join('tmp', uid, 'build1/codesplit.html')).toString();
         var $ = cheerio.load(content);
@@ -72,12 +72,6 @@ describe("Codesplit plugin", function() {
     var uid = triggerBuild({
       builds: [{ format: "html" }],
       files: ["book/content/advanced.md"],
-      liquid : {
-        includes: "book/examples"
-      },
-      codesplit: {
-        includes: "book/examples"
-      },
       finish: function() {
         var content = fs.readFileSync(path.join('tmp', uid, 'build1/advanced.html')).toString();
         var $ = cheerio.load(content);
@@ -103,6 +97,39 @@ describe("Codesplit plugin", function() {
         done();
       }
     });
+  });*/
+
+  describe("lines", function() {
+
+    it('should pick specific lines', function(done) {
+      var uid = triggerBuild({
+        builds: [{ format: "html" }],
+        files: ["book/content/lines.md"],
+        finish: function() {
+          var content = fs.readFileSync(path.join('tmp', uid, 'build1/lines.html')).toString();
+          var $ = cheerio.load(content);
+          expect($('.pair').length).toEqual(2);
+          expect($('.pair').eq(0).hasClass('no-comment')).toBeTruthy();
+          expect($('.pair').eq(0).find('.code pre code').html()).toEqual('var x = 100;\nvar y = 100;\n');
+          expect($('.pair').eq(1).find('.comment p').text()).toEqual('is executed once when the sketch starts. ');
+          expect($('.pair').eq(1).find('.code pre code').html()).toEqual('function setup() {\n');
+          done();
+        }
+      });
+    })
+
+    // it('should pick a range of lines', function(done) {
+    //
+    // });
+    //
+    // it('should pick both specific and range', function(done) {
+    //
+    // });
+    //
+    // it('should work on data-lines attribute', function(done) {
+    //
+    // });
+
   });
 
 });

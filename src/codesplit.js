@@ -13,27 +13,37 @@ var Plugin = function(registry) {
 
 Plugin.prototype = {
 
-  parseExample: function(code) {
+  parseExample: function(code, attrs) {
 
+    attrs = attrs || {};
     var opt = {} // no op for now
     var div = cheerio.load('<div class="codesplit"><div class="pairs"></div></div>');
     var box = div('.pairs');
-
-    // If we want to display just a part of this example,
-    // let's look for the start and finish lines and use
-    // only those.
-    if(opt.pick) {
-      var startIndex = code.indexOf(opt.pick.start)
-      var stopIndex = code.indexOf(opt.pick.stop)
-      if(startIndex > -1 && stopIndex > -1) {
-        code = code.substring(startIndex, stopIndex + opt.pick.stop.length);
-      }
-      else {
-        console.log("pick values not found");
-      }
-    }
-
     var split = code.split('\n');
+
+    // If we want to pick out just a few lines, let's do that.
+    if(attrs.lines) {
+
+      var newSplit = [];
+
+      // convert the numbers into single numbers or array of ranges
+      var nums = _.map(attrs.lines.split(','), function(num) {
+        num = num.trim();
+        if(num.match(/\-/)) return _.map(num.split('-'), function(n) { return parseInt(n) });
+        else return parseInt(num);
+      });
+
+      // find those lines
+      _.each(nums, function(num) {
+
+        if(_.isNumber(num)) {
+          newSplit.push(split[num-1]);
+        }
+
+      });
+
+      split = newSplit;
+    }
 
     // When picking values, we often pick lines that are indented. For those
     // lines not to have extra space on the left, let's remove the amount of
@@ -130,7 +140,7 @@ Plugin.prototype = {
     return div.html();
   },
 
-  getExample: function(examplePath) {
+  getExample: function(examplePath, attrs) {
 
     // only load if not in cache
     if(!this.cache[examplePath]) {
@@ -138,7 +148,7 @@ Plugin.prototype = {
     }
 
     // parse example
-    return this.parseExample(this.cache[examplePath]);
+    return this.parseExample(this.cache[examplePath], attrs);
   },
 
   // Plugin functions
@@ -146,14 +156,23 @@ Plugin.prototype = {
 
   parseLiquid: function(config, extras, callback) {
     var that = this;
-    _.set(config, 'liquid.customTags.codesplit', function(context, tag, example) {
+    _.set(config, 'liquid.customTags.codesplit', function(context, tag, input) {
 
       if(!_.get(config, 'codesplit.includes')) {
         return console.log('WARNING: No codesplit include folder set')
       }
 
+      // Get name of example file to load
+      var example = input.split(' ')[0];
       var examplePath = path.join(config.codesplit.includes, example);
-      var ast = tinyliquid.parse(that.getExample(examplePath))
+
+      // Get the attributes if any
+      var attrs = {};
+      var pattern = new RegExp('([a-zA-Z]+)="(.+)"', 'g');
+      var match = null;
+      while (match = pattern.exec(input)) { attrs[match[1]] = match[2]; }
+
+      var ast = tinyliquid.parse(that.getExample(examplePath, attrs))
       context.astStack.push(ast);
     });
     callback(null, config, extras);
