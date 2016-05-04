@@ -182,5 +182,5 @@ Sometimes you want to have a full example to e.g. run in the browser, but just s
 You can use the same setting in the liquid tag.
 
 ```html
-{% codesplit example.js lines="2,3,6-8" %}
+{% codesplit example.js lines:'2,3,6-8' %}
 ```
