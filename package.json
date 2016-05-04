@@ -1,6 +1,6 @@
 {
   "repository": "https://github.com/magicbookproject/magicbook-codesplit.git",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "name": "magicbook-codesplit",
   "description": "Codesplit plugin for magicbook",
   "author": "magicbookproject",

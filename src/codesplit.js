@@ -171,9 +171,9 @@ Plugin.prototype = {
 
       // Get the attributes if any
       var attrs = {};
-      var pattern = new RegExp('([a-zA-Z]+)="(.+)"', 'g');
+      var pattern = new RegExp('([a-zA-Z]+)\:("|\')(.+)("|\')', 'g');
       var match = null;
-      while (match = pattern.exec(input)) { attrs[match[1]] = match[2]; }
+      while (match = pattern.exec(input)) { attrs[match[1]] = match[3]; }
 
       var ast = tinyliquid.parse(that.getExample(examplePath, attrs))
       context.astStack.push(ast);
