@@ -16,10 +16,15 @@ Plugin.prototype = {
   parseExample: function(code, attrs) {
 
     attrs = attrs || {};
-    var opt = {} // no op for now
-    var div = cheerio.load('<div class="codesplit"><div class="pairs"></div></div>');
+
+    var klass = "codesplit";
+    if(attrs.class) {
+      klass += ' ' + attrs.class;
+    }
+    var div = cheerio.load('<div class="'+klass+'"><div class="pairs"></div></div>');
     var box = div('.pairs');
     var split = code.split('\n');
+    var opt = {} // no op for now
 
     // If we want to pick out just a few lines, let's do that.
     if(attrs.lines) {
@@ -171,9 +176,9 @@ Plugin.prototype = {
 
       // Get the attributes if any
       var attrs = {};
-      var pattern = new RegExp('([a-zA-Z]+)\:("|\')(.+)("|\')', 'g');
+      var pattern = new RegExp('([a-zA-Z]+)\:[\"\']([^\"\']+)[\"\']', 'g');
       var match = null;
-      while (match = pattern.exec(input)) { attrs[match[1]] = match[3]; }
+      while (match = pattern.exec(input)) { attrs[match[1]] = match[2]; }
 
       var ast = tinyliquid.parse(that.getExample(examplePath, attrs))
       context.astStack.push(ast);

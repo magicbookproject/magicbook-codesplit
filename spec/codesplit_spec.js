@@ -54,7 +54,7 @@ function expectCode($) {
 
 describe("Codesplit plugin", function() {
 
-  /*it("should split code and comments", function(done) {
+  it("should split code and comments", function(done) {
     var uid = triggerBuild({
       builds: [{ format: "html" }],
       files: ["book/content/codesplit.md"],
@@ -97,7 +97,20 @@ describe("Codesplit plugin", function() {
         done();
       }
     });
-  });*/
+  });
+
+  it('should add class to codesplit div', function(done) {
+    var uid = triggerBuild({
+      builds: [{ format: "html" }],
+      files: ["book/content/lines.md"],
+      finish: function() {
+        var content = fs.readFileSync(path.join('tmp', uid, 'build1/lines.html')).toString();
+        var $ = cheerio.load(content);
+        expect($('.codesplit.myclass').length).toEqual(1);
+        done();
+      }
+    });
+  });
 
   describe("lines", function() {
 

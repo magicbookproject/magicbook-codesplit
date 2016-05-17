@@ -184,3 +184,11 @@ You can use the same setting in the liquid tag.
 ```html
 {% codesplit example.js lines:'2,3,6-8' %}
 ```
+
+## Class
+
+You can add a classname to the codesplit div via liquid like this:
+
+```html
+{% codesplit example.js class:'myclass' %}
+```
