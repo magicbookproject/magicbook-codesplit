@@ -89,10 +89,10 @@ To add a class to a codepair, use the following syntax.
 var myName = "Rune Madsen"
 ```
 
-This will add the `.myClass` class to the `.code-pair` output:
+This will add the `.myClass` class to the `.pair` output:
 
 ```html
-<div class="codesplit-pair myClass">
+<div class="pair myClass">
   ...
 </div>
 ```
@@ -108,10 +108,10 @@ To add an id to a codepair, use the following syntax.
 var myName = "Rune Madsen"
 ```
 
-This will add the `#MyId` id to the `.code-pair` output:
+This will add the `#MyId` id to the `.pair` output:
 
 ```html
-<div class="codesplit-pair" id="myId">
+<div class="pair" id="myId">
   ...
 </div>
 ```
