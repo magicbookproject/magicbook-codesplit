@@ -112,6 +112,18 @@ describe("Codesplit plugin", function() {
     });
   });
 
+  it('should escape certain characters', function(done) {
+    var uid = triggerBuild({
+      builds: [{ format: "html" }],
+      files: ["book/content/escape.md"],
+      finish: function() {
+        var content = fs.readFileSync(path.join('tmp', uid, 'build1/escape.html')).toString();
+        expect(content.indexOf('if(1 &lt; 2 &amp;&amp; 2 &gt; 1) {') !== -1).toBe(true);
+        done();
+      }
+    });
+  });
+
   describe("lines", function() {
 
     function expectLines(el) {
