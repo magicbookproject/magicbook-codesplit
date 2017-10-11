@@ -145,6 +145,7 @@ Plugin.prototype = {
       jpair.append('<div class="code">\n\n<pre><code>' + codes + '</code></pre></div>');
 
     }
+    console.log(div.html())
     return div.html();
   },
 
