@@ -112,7 +112,7 @@ describe("Codesplit plugin", function() {
     });
   });
 
-  fit('should escape certain characters', function(done) {
+  it('should escape certain characters', function(done) {
     var uid = triggerBuild({
       builds: [{ format: "html" }],
       files: ["book/content/escape.md"],

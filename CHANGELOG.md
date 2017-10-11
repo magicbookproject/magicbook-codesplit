@@ -1,3 +1,7 @@
+## 1.0.4
+
+- Removing console.log. Duhhhhhh.
+
 ## 1.0.3
 
 - Updating cheerio to rc2 to fix escaping of characters inside code
