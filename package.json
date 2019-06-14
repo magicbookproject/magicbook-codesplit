@@ -14,10 +14,10 @@
     "test": "./node_modules/.bin/jasmine"
   },
   "dependencies": {
-    "cheerio": "1.0.0-rc.2",
+    "cheerio": "^1.0.0-rc.3",
     "lodash": "^4.17.11",
-    "tinyliquid": "^0.2.34",
-    "through2": "3.0.1"
+    "through2": "^3.0.1",
+    "tinyliquid": "^0.2.34"
   },
   "devDependencies": {
     "jasmine": "^3.4.0",
