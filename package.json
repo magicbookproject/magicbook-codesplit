@@ -6,23 +6,23 @@
   "author": "magicbookproject",
   "license": "MIT",
   "main": "src/codesplit.js",
-  "keywords" : [
+  "keywords": [
     "magicbook",
     "magicbook-plugin"
   ],
-  "scripts" : {
-    "test" : "./node_modules/.bin/jasmine"
+  "scripts": {
+    "test": "./node_modules/.bin/jasmine"
   },
   "dependencies": {
     "cheerio": "1.0.0-rc.2",
-    "lodash": "^4.6.1",
-    "tinyliquid": "^0.2.31",
+    "lodash": "^4.17.11",
+    "tinyliquid": "^0.2.34",
     "through2": "3.0.1"
   },
   "devDependencies": {
-    "jasmine": "^2.8.0",
-    "rimraf": "^2.5.2",
-    "node-uuid": "^1.4.7",
-    "magicbook": "^0.1.14"
+    "jasmine": "^3.4.0",
+    "rimraf": "^2.6.3",
+    "node-uuid": "^1.4.8",
+    "magicbook": "^0.1.18"
   }
 }
